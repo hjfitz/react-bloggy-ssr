@@ -2,8 +2,13 @@ import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
 import compression from 'compression';
+import staticify from 'staticify';
 import contentful, { getAuthorByName, getAllPosts, getPostBySlug } from './contentful';
 import render from './ssr';
+
+// var staticify = require('staticify')(path.join(__dirname, 'public'), options);
+const stat = staticify(path.join(process.cwd(), 'public'), { pathPrefix: '/public' });
+
 
 const app = express();
 const port = parseInt(process.env.PORT || 8080, 10);
@@ -12,7 +17,8 @@ app.use(morgan('dev'));
 
 app.use(compression());
 
-app.use('/public', express.static(path.join(process.cwd(), 'public')));
+// app.use('/public', express.static(path.join(process.cwd(), 'public')));
+app.use('/public', stat.middleware);
 
 app.use('/api/contentful', contentful);
 

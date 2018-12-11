@@ -18,13 +18,12 @@ export const getPostBySlug = slug => cfClient.getEntries({
   'fields.slug': slug,
   include: 3,
   limit: 1,
-}).then(resp => resp.items[0])
-  .then((post) => {
-    const { fields } = post;
-    fields.readingTime = calculateReadTime(fields.body);
-    fields.body = marked(fields.body);
-    return fields;
-  });
+}).then((resp) => {
+  const { fields } = resp.items[0];
+  fields.readingTime = calculateReadTime(fields.body);
+  fields.body = marked(fields.body);
+  return fields;
+});
 
 export const getAuthorByName = name => cfClient.getEntries({
   content_type: 'author',

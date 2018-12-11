@@ -1,3 +1,11 @@
+import staticify from 'staticify';
+import path from 'path';
+
+const options = { pathPrefix: '/public' };
+
+const stat = staticify(path.join(process.cwd(), 'public'), options);
+
+
 const template = (dom, props) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +20,7 @@ const template = (dom, props) => `
   <script>
     window.__layoutProps = ${JSON.stringify(props)}
   </script>
-  <script src="/public/js/client.bundle.js"></script>
+  <script src="${stat.getVersionedPath('/public/js/client.bundle.js')}"></script>
 </body>
 </html>`;
 
